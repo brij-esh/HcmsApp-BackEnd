@@ -1,0 +1,63 @@
+package com.app.controller;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.entity.Doctor;
+import com.app.service.DoctorService;
+
+@RestController
+@RequestMapping("/doctor")
+@CrossOrigin("http://localhost:4200")
+public class DoctorController {
+
+	
+	@Autowired
+	private DoctorService doctorService;
+	
+	
+	
+	@PostMapping("/")
+	public Doctor createDoctor(@RequestBody Doctor doctor) throws Exception {
+		return this.doctorService.createDoctor(doctor);
+	}
+	
+	@GetMapping("/get-doctor/{doctorIdData}")
+	public Doctor getDoctor(@PathVariable String doctorIdData) {
+		return this.doctorService.findByDoctorId(doctorIdData);
+	}
+	
+	@GetMapping("/get-doctor-list")
+	public List<Doctor> getDoctorList(){
+		return this.doctorService.getDoctorList();
+	}
+	
+	@PutMapping("/update-doctor")
+	public Doctor updateDoctor(@RequestBody Doctor doctorData) {
+		Doctor doctor = this.doctorService.findByDoctorId(doctorData.getDoctorId());
+		System.out.println(doctor);
+		if(doctor!=null) {
+			this.doctorService.updateDoctor(doctorData);
+		}
+		return doctor;
+	}
+	
+	@DeleteMapping("/delete-doctor/{doctorIdData}")
+	@Transactional
+	public String deleteDoctor(@PathVariable  String doctorIdData) {
+		System.out.println("Doctor delete method "+doctorIdData);
+		return this.doctorService.deleteDoctor(doctorIdData);
+	}
+}
