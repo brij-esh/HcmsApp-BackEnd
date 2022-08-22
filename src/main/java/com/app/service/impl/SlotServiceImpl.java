@@ -10,6 +10,8 @@ import com.app.entity.Slot;
 import com.app.repo.SlotRepo;
 import com.app.service.SlotService;
 
+import lombok.extern.java.Log;
+
 @Service
 public class SlotServiceImpl implements SlotService{
 	
@@ -18,15 +20,17 @@ public class SlotServiceImpl implements SlotService{
 	private SlotRepo slotRepo;
 	
 	@Override
-	public Slot createSlot(Slot slot) {
-		if(getSlotCount(slot.getDoctorId(), slot.getSlotDate()) < 5) {
+	public Slot createSlot(Slot slotData) {
+		Slot slot = null;
+		if(getSlotCount(slotData.getDoctorId(), slotData.getSlotDate()) < 5) {
 			System.out.println("slot available");
-//			System.out.println(slot.getSlotDate());
-			System.out.println(getSlotCount(slot.getDoctorId(), slot.getSlotDate()) + " create getSlot method");
-			return this.slotRepo.save(slot);
+			System.out.println(slotData.getSlotDate());
+			slot = this.slotRepo.save(slotData);
+			System.out.println(getSlotCount(slotData.getDoctorId(), slotData.getSlotDate()) + "slots, create getSlot method called");
+			return slot;
 		}
 		System.out.println("slots not available");
-		return null;
+		return slot;
 	}
 	
 
@@ -44,7 +48,9 @@ public class SlotServiceImpl implements SlotService{
 	@Override
 	public int getSlotCount(String doctorId, LocalDate slotDate) {
 		int slots =  this.slotRepo.getSlotCount(doctorId, slotDate);
+		System.out.println(slotDate + "service");
 		return slots;
 	}
+
 
 }

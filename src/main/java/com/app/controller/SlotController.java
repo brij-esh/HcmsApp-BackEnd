@@ -1,16 +1,19 @@
 package com.app.controller;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.entity.Slot;
@@ -45,8 +48,8 @@ public class SlotController {
 	}
 	
 	
-	@GetMapping("/get-slot-count/{doctorIdData}/{slotDate}")
-	public int getSlotCount(@PathVariable("doctorIdData") String doctorIdData, LocalDate slotDate) {
+	@GetMapping("/get-slot-count/{doctorIdData}")
+	public int getSlotCount(@PathVariable("doctorIdData") String doctorIdData, @RequestParam("slotDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate slotDate) {
 		int slots = this.slotService.getSlotCount(doctorIdData, slotDate);
 		log.error("Controller"+slots);
 		log.error(doctorIdData);
