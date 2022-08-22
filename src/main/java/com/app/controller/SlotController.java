@@ -3,6 +3,7 @@ package com.app.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.entity.Slot;
 import com.app.service.SlotService;
 
+import lombok.extern.log4j.Log4j2;
+
 @RestController
 @RequestMapping("/slot")
 @CrossOrigin("http://localhost:4200")
+@Log4j2
 public class SlotController {
 	
 	
@@ -44,9 +48,9 @@ public class SlotController {
 	@GetMapping("/get-slot-count/{doctorIdData}/{slotDate}")
 	public int getSlotCount(@PathVariable("doctorIdData") String doctorIdData, LocalDate slotDate) {
 		int slots = this.slotService.getSlotCount(doctorIdData, slotDate);
-		System.out.println("Controller: " +slots);
-		System.out.println(doctorIdData);
-		System.out.println(slotDate);
+		log.error("Controller"+slots);
+		log.error(doctorIdData);
+		log.error(slotDate);
 		return slots;
 	}
 	

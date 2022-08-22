@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.entity.Admin;
 import com.app.service.AdminService;
 
+
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin("http://localhost:4200")
@@ -21,14 +22,14 @@ public class AdminController {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> loginAdmin(@RequestBody Admin adminData){
+	public ResponseEntity<Admin> loginAdmin(@RequestBody Admin adminData){
 		
 		Admin admin = this.adminService.findByAdminId(adminData.getAdminId());
 		
 		if(admin.getPassword().equals(adminData.getPassword())) {
 			return ResponseEntity.ok(admin);
 		}
-		return (ResponseEntity<?>) ResponseEntity.internalServerError();
+		return (ResponseEntity<Admin>) ResponseEntity.internalServerError();
 		
 	}
 

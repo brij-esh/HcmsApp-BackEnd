@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.entity.Doctor;
 import com.app.service.DoctorService;
 
+import lombok.extern.log4j.Log4j2;
+
 @RestController
 @RequestMapping("/doctor")
 @CrossOrigin("http://localhost:4200")
+@Log4j2
 public class DoctorController {
 
 	
@@ -47,7 +50,7 @@ public class DoctorController {
 	@PutMapping("/update-doctor")
 	public Doctor updateDoctor(@RequestBody Doctor doctorData) {
 		Doctor doctor = this.doctorService.findByDoctorId(doctorData.getDoctorId());
-		System.out.println(doctor);
+		log.error(doctor);
 		if(doctor!=null) {
 			this.doctorService.updateDoctor(doctorData);
 		}
@@ -57,7 +60,7 @@ public class DoctorController {
 	@DeleteMapping("/delete-doctor/{doctorIdData}")
 	@Transactional
 	public String deleteDoctor(@PathVariable  String doctorIdData) {
-		System.out.println("Doctor delete method "+doctorIdData);
+		log.error("Doctor delete method "+doctorIdData);
 		return this.doctorService.deleteDoctor(doctorIdData);
 	}
 }

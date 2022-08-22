@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.entity.Pharmacy;
 import com.app.service.PharmacyService;
 
+import lombok.extern.log4j.Log4j2;
+
 @RestController
 @RequestMapping("/pharmacy")
 @CrossOrigin("http://localhost:4200")
+@Log4j2
 public class PharmacyController {
 	
 	@Autowired
@@ -30,14 +34,12 @@ public class PharmacyController {
 //	creating pharmacy
 	@PostMapping("/")
 	public Pharmacy createPharmacy(@RequestBody Pharmacy pharmacyData) throws Exception {
-		Pharmacy pharm = this.pharmacyService.createPharmacy(pharmacyData);
-		return pharm;
+		return this.pharmacyService.createPharmacy(pharmacyData);
 	}
 	
 	@GetMapping("/get-pharmacy/{pharmacyIdData}")
 	public Pharmacy getPharmacy(@PathVariable String pharmacyIdData) {
-		Pharmacy pharmacy = this.pharmacyService.findByPharmacyId(pharmacyIdData);
-		return pharmacy;
+		return this.pharmacyService.findByPharmacyId(pharmacyIdData);
 	}
 	@GetMapping("/get-pharmacy-list")
 	public List<Pharmacy> getPharmacyList(){
@@ -58,8 +60,7 @@ public class PharmacyController {
 	@DeleteMapping("/delete-pharmacy/{pharmacyIdData}")
 	@Transactional
 	public String deletePharmacy(@PathVariable  String pharmacyIdData) {
-		System.out.println("Pharmacy delete method "+pharmacyIdData);
-		
+		log.error("Pharmacy deleted"+pharmacyIdData);
 		return this.pharmacyService.deletePharmacy(pharmacyIdData);
 	}
 	
