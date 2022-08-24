@@ -1,6 +1,7 @@
 package com.app.repo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,8 @@ public interface SlotRepo extends JpaRepository<Slot, String>{
 
 	public Slot findBySlotId(String slotId);
 	
+	public List<Slot> findByDoctorId(String doctorId);
+
 	@Query("SELECT count(*) FROM #{#entityName} where doctorId = :doctorId and slotDate = :slotDate")
 	public int getSlotCount(@Param("doctorId") String doctorId,@Param("slotDate") LocalDate slotdate);
 

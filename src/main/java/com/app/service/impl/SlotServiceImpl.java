@@ -52,5 +52,19 @@ public class SlotServiceImpl implements SlotService{
 		return slots;
 	}
 
+	@Override
+	public List<Slot> getSlotListByDoctorId(String doctorId){
+		return this.slotRepo.findByDoctorId(doctorId);
+	}
+
+	@Override
+	public Slot updateSlotPrescription(String slotId, String prescription){
+		Slot slot = this.slotRepo.findBySlotId(slotId);
+		slot.setPrescription(prescription);
+		this.slotRepo.save(slot);
+		return slot;
+	}
+
+
 
 }

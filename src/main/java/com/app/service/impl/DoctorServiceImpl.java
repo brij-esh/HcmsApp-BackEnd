@@ -57,4 +57,6 @@ public class DoctorServiceImpl implements DoctorService{
 		return doctorIdData+" doctor deleted";
 	}
 
+	
+
 }

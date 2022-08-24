@@ -17,10 +17,11 @@ public class Slot {
 	private int patientAge;
 	private LocalDate slotDate;
 	private String doctorId;
+	private String symptoms;
 	private String prescription;
 
 	public Slot(String slotId, String patientName, int patientAge, LocalDate slotDate, String doctorId,
-			String prescription) {
+			String prescription, String symptoms) {
 		super();
 		this.slotId = slotId;
 		this.patientName = patientName;
@@ -28,6 +29,7 @@ public class Slot {
 		this.slotDate = slotDate;
 		this.doctorId = doctorId;
 		this.prescription = prescription;
+		this.symptoms = symptoms;
 	}
 	public Slot() {
 		super();
@@ -67,6 +69,12 @@ public class Slot {
 	}
 	public void setDoctorId(String doctorId) {
 		this.doctorId = doctorId;
+	}
+	public String getSymptoms() {
+		return symptoms;
+	}
+	public void setSymptoms(String symptoms) {
+		this.symptoms = symptoms;
 	}
 	
 }
