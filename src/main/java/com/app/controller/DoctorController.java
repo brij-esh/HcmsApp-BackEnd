@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,15 @@ public class DoctorController {
 	@Autowired
 	private DoctorService doctorService;
 	
-	
+	@PostMapping("/login")
+	public ResponseEntity<Doctor> loginAdmin(@RequestBody Doctor doctorData){
+		Doctor doctor = this.doctorService.findByDoctorId(doctorData.getDoctorId());
+		if(doctor.getDoctorPassword().equals(doctorData.getDoctorPassword())) {
+			return ResponseEntity.ok(doctor);
+		}
+		return (ResponseEntity<Doctor>) ResponseEntity.internalServerError();
+		
+	}
 	
 	@PostMapping("/")
 	public Doctor createDoctor(@RequestBody Doctor doctor) throws Exception {

@@ -15,4 +15,7 @@ public interface SlotService {
 
 	public int getSlotCount(String doctorId, LocalDate slotDate);
 
+	public List<Slot> getSlotListByDoctorId(String doctorId);
+
+	public Slot updateSlotPrescription(String slotId, String prescription);
 }

@@ -1,16 +1,15 @@
 package com.app.controller;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +19,6 @@ import com.app.entity.Slot;
 import com.app.service.SlotService;
 
 import lombok.extern.log4j.Log4j2;
-
 @RestController
 @RequestMapping("/slot")
 @CrossOrigin("http://localhost:4200")
@@ -61,6 +59,17 @@ public class SlotController {
 	public String getSlotPrescription(@PathVariable String slotIdData) {
 		Slot slot = this.slotService.getSlotById(slotIdData);
 		return slot.getPrescription();
+	}
+
+	@GetMapping("/get-slot-list-by-doctor-id/{doctorIdData}")
+	public List<Slot> getSlotListByDoctorId(@PathVariable String doctorIdData){
+		return this.slotService.getSlotListByDoctorId(doctorIdData);
+	}
+
+	@PutMapping("/update-slot/{slotId}")
+	public Slot updateSlot(@PathVariable String slotId, @RequestBody String prescription){
+		System.out.println(slotId + prescription);
+		return this.slotService.updateSlotPrescription(slotId, prescription);
 	}
 
 }

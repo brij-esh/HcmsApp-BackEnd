@@ -16,12 +16,14 @@ public class Doctor {
 	private String doctorPassword;
 	private String doctorPhone;
 	private String doctorEmail;
+	private String doctorAddress;
+	private String doctorImageUrl;
 	public Doctor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Doctor(String doctorId, String doctorName, String specialization, String doctorPassword, String doctorPhone,
-			String doctorEmail) {
+			String doctorEmail, String doctorAddress, String doctorImageUrl) {
 		super();
 		this.doctorId = doctorId;
 		this.doctorName = doctorName;
@@ -29,6 +31,8 @@ public class Doctor {
 		this.doctorPassword = doctorPassword;
 		this.doctorPhone = doctorPhone;
 		this.doctorEmail = doctorEmail;
+		this.doctorAddress = doctorAddress;
+		this.doctorImageUrl = doctorImageUrl;
 	}
 	public String getDoctorId() {
 		return doctorId;
@@ -67,6 +71,18 @@ public class Doctor {
 		this.doctorEmail = doctorEmail;
 	}
 	
+	public String getDoctorAddress() {
+		return doctorAddress;
+	}
+	public void setDoctorAddress(String doctorAddress) {
+		this.doctorAddress = doctorAddress;
+	}
+	public String getDoctorImageUrl() {
+		return doctorImageUrl;
+	}
+	public void setDoctorImageUrl(String doctorImageUrl) {
+		this.doctorImageUrl = doctorImageUrl;
+	}
 	
 
 }

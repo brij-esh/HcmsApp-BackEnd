@@ -46,7 +46,6 @@ public class PharmacyController {
 		return this.pharmacyService.getPharmacyList();
 	}
 	
-
 	
 	@PutMapping("/update-pharmacy")
 	public Pharmacy updatePharmacy(@RequestBody Pharmacy pharmacyData) {
