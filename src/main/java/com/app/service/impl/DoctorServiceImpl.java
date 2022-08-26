@@ -9,24 +9,28 @@ import com.app.entity.Doctor;
 import com.app.repo.DoctorRepo;
 import com.app.service.DoctorService;
 
+
 @Service
 public class DoctorServiceImpl implements DoctorService{
-	
 	
 	@Autowired
 	private DoctorRepo doctorRepo;
 
 	@Override
-	public Doctor createDoctor(Doctor doctor) throws Exception {
-		
-		Doctor doctor2 = this.doctorRepo.findByDoctorId(doctor.getDoctorId());
-		if(doctor2!=null) {
-			System.out.println("Doctor already present with doctor id: "+doctor.getDoctorId());
-			throw new Exception("Doctor already present with doctor id: "+doctor.getDoctorId());
-		}else {
-			doctor2 = this.doctorRepo.save(doctor);
+	public Doctor createDoctor(Doctor doctorData) throws Exception {
+		Doctor doctor = this.doctorRepo.findByDoctorId(doctorData.getDoctorId());
+		String generatedDoctorId = "";
+		if(doctor!=null){
+			generatedDoctorId += doctorData.getDoctorName().substring(0,3).concat(doctorData.getDoctorPhone().substring(1,3));
+		}else{
+			generatedDoctorId += doctorData.getDoctorName().substring(0,3).concat(doctorData.getDoctorPhone().substring(0,3));
 		}
-		return doctor2;
+		try {
+			doctorData.setDoctorId(generatedDoctorId);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return this.doctorRepo.save(doctorData);
 	}
 
 	@Override

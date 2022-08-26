@@ -42,8 +42,8 @@ public class DoctorController {
 	}
 	
 	@PostMapping("/")
-	public Doctor createDoctor(@RequestBody Doctor doctor) throws Exception {
-		return this.doctorService.createDoctor(doctor);
+	public Doctor createDoctor(@RequestBody Doctor doctorData) throws Exception {
+		return this.doctorService.createDoctor(doctorData);
 	}
 	
 	@GetMapping("/get-doctor/{doctorIdData}")

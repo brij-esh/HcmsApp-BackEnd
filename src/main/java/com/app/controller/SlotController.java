@@ -68,7 +68,7 @@ public class SlotController {
 
 	@PutMapping("/update-slot/{slotId}")
 	public Slot updateSlot(@PathVariable String slotId, @RequestBody String prescription){
-		System.out.println(slotId + prescription);
+		log.error(slotId + prescription);
 		return this.slotService.updateSlotPrescription(slotId, prescription);
 	}
 

@@ -37,7 +37,7 @@ public class AdminController {
 		
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	@PostMapping("/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response){
 		return "redirect:/login";
 	}

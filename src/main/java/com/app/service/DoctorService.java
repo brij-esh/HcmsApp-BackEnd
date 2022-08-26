@@ -6,7 +6,7 @@ import com.app.entity.Doctor;
 
 public interface DoctorService {
 
-	public Doctor createDoctor(Doctor doctor) throws Exception;
+	public Doctor createDoctor(Doctor doctorData) throws Exception;
 
 	public Doctor findByDoctorId(String doctorIdData);
 	
