@@ -14,18 +14,22 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 	@Autowired
 	private PharmacyRepo pharmacyRepo;
-	
-	
+
 	@Override
-	public Pharmacy createPharmacy(Pharmacy pharmacy) throws Exception {
-		Pharmacy pharm = this.pharmacyRepo.findByPharmacyId(pharmacy.getPharmacyId());
-		if(pharm!=null) {
-			System.out.println("Pharmacy Already Present with pharmacy id: "+pharmacy.getPharmacyId());
-			throw new Exception("Pharmacy Already Present with pharmacy id: "+pharmacy.getPharmacyId());
-		}else {
-			pharm = this.pharmacyRepo.save(pharmacy);
+	public Pharmacy createPharmacy(Pharmacy pharmacyData) throws Exception {
+		Pharmacy pharmacy = this.pharmacyRepo.findByPharmacyId(pharmacyData.getPharmacyId());
+		String generatedPharmacyId = "";
+		if(pharmacy!=null){
+			generatedPharmacyId += pharmacyData.getPharmacyName().substring(0,3).concat(pharmacyData.getPharmacyPhone().substring(1,3));
+		}else{
+			generatedPharmacyId += pharmacyData.getPharmacyName().substring(0,3).concat(pharmacyData.getPharmacyPhone().substring(0,3));
 		}
-		return pharm;
+		try {
+			pharmacyData.setPharmacyId(generatedPharmacyId);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return this.pharmacyRepo.save(pharmacyData);
 	}
 
 
