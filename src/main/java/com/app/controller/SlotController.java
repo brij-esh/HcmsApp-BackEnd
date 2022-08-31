@@ -72,4 +72,9 @@ public class SlotController {
 		return this.slotService.updateSlotPrescription(slotId, prescription);
 	}
 
+	@GetMapping("/get-slot-list-by-user-id/{userIdData}")
+	public List<Slot> getSlotListByUserId(@PathVariable int userIdData){
+		return this.slotService.getSlotListByUserId(userIdData);
+	}
+
 }

@@ -35,8 +35,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 	@Override
 	public Pharmacy findByPharmacyId(String pharmacyIdData) {
-		Pharmacy pharm = this.pharmacyRepo.findByPharmacyId(pharmacyIdData);
-		return pharm;
+		return this.pharmacyRepo.findByPharmacyId(pharmacyIdData);
 	}
 	
 	@Override
@@ -61,7 +60,6 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	@Override
 	public String deletePharmacy(String pharmacyIdData) {
-//		this.pharmacyRepo.delete(this.pharmacyRepo.findByPharmacyId(pharmacyIdData));
 		this.pharmacyRepo.deleteByPharmacyId(pharmacyIdData);
 		return pharmacyIdData+"\nDeleted Pharmacy!!";
 	}

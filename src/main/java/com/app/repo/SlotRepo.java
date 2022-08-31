@@ -18,6 +18,8 @@ public interface SlotRepo extends JpaRepository<Slot, String>{
 	public List<Slot> findByDoctorId(String doctorId);
 
 	@Query("SELECT count(*) FROM #{#entityName} where doctorId = :doctorId and slotDate = :slotDate")
-	public int getSlotCount(@Param("doctorId") String doctorId,@Param("slotDate") LocalDate slotdate);
+	public int getSlotCount(@Param("doctorId") String doctorId,@Param("slotDate") LocalDate slotDate);
+
+	public List<Slot> findAllByUserId(int userId);
 
 }

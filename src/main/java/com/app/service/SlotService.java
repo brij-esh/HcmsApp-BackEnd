@@ -18,4 +18,6 @@ public interface SlotService {
 	public List<Slot> getSlotListByDoctorId(String doctorId);
 
 	public Slot updateSlotPrescription(String slotId, String prescription);
+
+	public List<Slot> getSlotListByUserId(int userId);
 }

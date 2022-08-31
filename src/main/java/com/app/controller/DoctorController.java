@@ -32,7 +32,7 @@ public class DoctorController {
 	private DoctorService doctorService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Doctor> loginAdmin(@RequestBody Doctor doctorData){
+	public ResponseEntity<Doctor> loginDoctor(@RequestBody Doctor doctorData){
 		Doctor doctor = this.doctorService.findByDoctorId(doctorData.getDoctorId());
 		if(doctor.getDoctorPassword().equals(doctorData.getDoctorPassword())) {
 			return ResponseEntity.ok(doctor);

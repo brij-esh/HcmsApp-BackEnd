@@ -3,12 +3,28 @@ package com.app.entity;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
 @Entity
 @Table(name = "slot_table")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(exclude = {"user","doctor"})
 public class Slot {
 
 	@Id
@@ -21,68 +37,14 @@ public class Slot {
 	private String symptoms;
 	private String prescription;
 
-	public Slot(String slotId, String patientName, int patientAge, LocalDate slotDate, String doctorId, String patientPhone,
-			String prescription, String symptoms) {
-		super();
-		this.slotId = slotId;
-		this.patientName = patientName;
-		this.patientAge = patientAge;
-		this.patientPhone = patientPhone;
-		this.slotDate = slotDate;
-		this.doctorId = doctorId;
-		this.prescription = prescription;
-		this.symptoms = symptoms;
-	}
-	public Slot() {
-		super();
-	}
-	public String getPrescription() {
-		return prescription;
-	}
-	public void setPrescription(String prescription) {
-		this.prescription = prescription;
-	}
-	public String getSlotId() {
-		return slotId;
-	}
-	public void setSlotId(String slotId) {
-		this.slotId = slotId;
-	}
-	public String getPatientName() {
-		return patientName;
-	}
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
-	}
-	public int getPatientAge() {
-		return patientAge;
-	}
-	public void setPatientAge(int patientAge) {
-		this.patientAge = patientAge;
-	}
-	public LocalDate getSlotDate() {
-		return slotDate;
-	}
-	public void setSlotDate(LocalDate slotDate) {
-		this.slotDate = slotDate;
-	}
-	public String getDoctorId() {
-		return doctorId;
-	}
-	public void setDoctorId(String doctorId) {
-		this.doctorId = doctorId;
-	}
-	public String getSymptoms() {
-		return symptoms;
-	}
-	public void setSymptoms(String symptoms) {
-		this.symptoms = symptoms;
-	}
-	public String getPatientPhone() {
-		return patientPhone;
-	}
-	public void setPatientPhone(String patientPhone) {
-		this.patientPhone = patientPhone;
-	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "userId")
+	@JsonBackReference(value = "user-ref")
+	private User user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "doctorId")
+	@JsonBackReference(value = "doctor-ref")
+	private Doctor doctor;
 	
 }

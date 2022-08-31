@@ -22,16 +22,28 @@ public class SlotServiceImpl implements SlotService{
 	
 	@Override
 	public Slot createSlot(Slot slotData) {
-		Slot slot = null;
+		Slot slot = new Slot();
 		if(getSlotCount(slotData.getDoctorId(), slotData.getSlotDate()) < 5) {
+			slotData.setSlotId(generateSlotId(slotData.getPatientName(),slotData.getSlotDate(),slotData.getDoctorId()));
 			log.error("slot available");
 			log.error(slotData.getSlotDate());
-			slot = this.slotRepo.save(slotData);
+			log.error(slotData);
+			try {
+				log.error(slot.getSlotId());
+				slot = this.slotRepo.save(slotData);
+				
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
 			log.error(getSlotCount(slotData.getDoctorId(), slotData.getSlotDate()) + "slots, create getSlot method called");
 			return slot;
 		}
 		log.error("slots not available");
 		return slot;
+	}
+
+	public String generateSlotId(String patientName, LocalDate date,String doctorId){
+		return patientName.substring(0,4).concat(doctorId.substring(0,3)).concat(date.toString().substring(4,7));
 	}
 	
 
@@ -66,6 +78,11 @@ public class SlotServiceImpl implements SlotService{
 		return slot;
 	}
 
+
+	@Override
+	public List<Slot> getSlotListByUserId(int userId) {
+		return this.slotRepo.findAllByUserId(userId);
+	}
 
 
 }
