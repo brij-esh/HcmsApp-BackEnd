@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserById(int userId){
+    public User getUserById(Long userId){
         return this.userRepo.findById(userId);
     }
 

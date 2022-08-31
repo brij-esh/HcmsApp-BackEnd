@@ -27,5 +27,6 @@ public class Payment {
 	private String cardHolderName;
 	private String expiry;
 	private String cvv;
+    private Double fees;
     
 }

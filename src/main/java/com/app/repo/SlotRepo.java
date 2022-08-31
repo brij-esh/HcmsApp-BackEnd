@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.app.entity.Slot;
 
 @Repository
-public interface SlotRepo extends JpaRepository<Slot, String>{
+public interface SlotRepo extends JpaRepository<Slot, Long>{
 
 	public Slot findBySlotId(String slotId);
 	
@@ -20,6 +20,6 @@ public interface SlotRepo extends JpaRepository<Slot, String>{
 	@Query("SELECT count(*) FROM #{#entityName} where doctorId = :doctorId and slotDate = :slotDate")
 	public int getSlotCount(@Param("doctorId") String doctorId,@Param("slotDate") LocalDate slotDate);
 
-	public List<Slot> findAllByUserId(int userId);
+	public List<Slot> findAllByUserId(Long userId);
 
 }

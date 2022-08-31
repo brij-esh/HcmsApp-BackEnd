@@ -19,5 +19,7 @@ public interface SlotService {
 
 	public Slot updateSlotPrescription(String slotId, String prescription);
 
-	public List<Slot> getSlotListByUserId(int userId);
+	public List<Slot> getSlotListByUserId(Long userId);
+
+	public Slot updateSlot(Slot slot);
 }

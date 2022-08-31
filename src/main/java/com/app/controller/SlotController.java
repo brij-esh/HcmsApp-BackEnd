@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.entity.Doctor;
 import com.app.entity.Slot;
+import com.app.entity.User;
+import com.app.service.DoctorService;
 import com.app.service.SlotService;
+import com.app.service.UserService;
 
 import lombok.extern.log4j.Log4j2;
 @RestController
@@ -28,6 +32,13 @@ public class SlotController {
 	
 	@Autowired
 	private SlotService slotService;
+
+	@Autowired
+	private DoctorService doctorService;
+
+	@Autowired
+	private UserService userService;
+
 	
 	@PostMapping("/create-slot")
 	public Slot createSlot(@RequestBody Slot slot) {
@@ -73,8 +84,24 @@ public class SlotController {
 	}
 
 	@GetMapping("/get-slot-list-by-user-id/{userIdData}")
-	public List<Slot> getSlotListByUserId(@PathVariable int userIdData){
+	public List<Slot> getSlotListByUserId(@PathVariable Long userIdData){
 		return this.slotService.getSlotListByUserId(userIdData);
+	}
+
+	@PutMapping("/{slotId}/doctor/{doctorId}")
+	public Slot bookSlot(@PathVariable String slotId,@PathVariable String doctorId){
+		Doctor doctor = this.doctorService.findByDoctorId(doctorId);
+		Slot slot = this.slotService.getSlotById(slotId);
+		slot.assignDoctor(doctor);
+		return this.slotService.updateSlot(slot);
+	}
+
+	@PutMapping("/{slotId}/user/{userId}")
+	public Slot bookUser(@PathVariable Long userId,@PathVariable String slotId){
+		User user = this.userService.getUserById(userId);
+		Slot slot = this.slotService.getSlotById(slotId);
+		slot.assignUser(user);
+		return this.slotService.updateSlot(slot);
 	}
 
 }

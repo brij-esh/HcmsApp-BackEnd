@@ -46,6 +46,7 @@ public class DoctorServiceImpl implements DoctorService{
 		doctor.setDoctorPassword(doctorData.getDoctorPassword());
 		doctor.setDoctorPhone(doctorData.getDoctorPhone());
 		doctor.setSpecialization(doctorData.getSpecialization());
+		doctor.setDoctorImageUrl(doctorData.getDoctorImageUrl());
 		this.doctorRepo.save(doctor);
 		return doctor;
 	}

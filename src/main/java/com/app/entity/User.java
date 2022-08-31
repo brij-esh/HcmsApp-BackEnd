@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ import lombok.ToString;
 public class User {
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Long id;
 	private String userFirstName;
 	private String userLastName;
 	private int userAge;
@@ -38,7 +39,8 @@ public class User {
 	private String password;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     @JsonManagedReference(value = "user-ref")
+	@JsonIgnore
     private List<Slot> slots;
 }

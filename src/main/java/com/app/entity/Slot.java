@@ -2,8 +2,11 @@ package com.app.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,6 +31,7 @@ import lombok.ToString;
 public class Slot {
 
 	@Id
+	// @GeneratedValue(strategy = GenerationType.AUTO)
 	private String slotId;
 	private String patientName;
 	private int patientAge;
@@ -37,14 +41,22 @@ public class Slot {
 	private String symptoms;
 	private String prescription;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "userId")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn
 	@JsonBackReference(value = "user-ref")
 	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "doctorId")
+	public void assignUser(User user){
+		this.user = user;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn
 	@JsonBackReference(value = "doctor-ref")
 	private Doctor doctor;
+
+	public void assignDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
 	
 }
