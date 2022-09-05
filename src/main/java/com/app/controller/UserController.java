@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.entity.User;
 import com.app.service.UserService;
 
+import lombok.extern.log4j.Log4j2;
+
 
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping("/user")
+@Log4j2
 public class UserController {
     
     @Autowired
@@ -30,14 +33,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> userLogin(@RequestBody User userData){
-        System.out.println(userData);
+        log.error(userData);
         User user = this.userService.loginUser(userData);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/get-user/{userEmailIdData}")
     public ResponseEntity<User> getUserByEmailId(@PathVariable String userEmailIdData){
-        System.out.println(userEmailIdData + "controller");
+        log.error(userEmailIdData + "controller");
         User user = this.userService.getUserByEmailId(userEmailIdData);
         return ResponseEntity.ok(user);
     }
