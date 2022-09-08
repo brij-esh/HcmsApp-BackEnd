@@ -1,7 +1,7 @@
 package com.app.service;
 
-import com.app.entity.Payment;
+import com.app.dto.PaymentDTO;
 
 public interface PaymentService {
-    public Payment createPayment(Payment payment);
+    public PaymentDTO createPayment(PaymentDTO paymentDTO);
 }

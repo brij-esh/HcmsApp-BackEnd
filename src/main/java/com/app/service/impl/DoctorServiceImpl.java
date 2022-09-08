@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.converter.DoctorConverter;
+import com.app.dto.DoctorDTO;
 import com.app.entity.Doctor;
+import com.app.exception.DoctorNotFoundException;
 import com.app.repo.DoctorRepo;
 import com.app.service.DoctorService;
 
@@ -16,21 +19,23 @@ public class DoctorServiceImpl implements DoctorService{
 	@Autowired
 	private DoctorRepo doctorRepo;
 
+	@Autowired
+	private DoctorConverter doctorConverter;
+
 	@Override
-	public Doctor createDoctor(Doctor doctorData) throws Exception {
-		Doctor doctor = this.doctorRepo.findByDoctorId(doctorData.getDoctorId());
+	public DoctorDTO createDoctor(DoctorDTO doctorDTO) throws DoctorNotFoundException {
+
+		Doctor doctor = this.doctorRepo.findByDoctorId(this.doctorConverter.convertDtoToEntity(doctorDTO).getDoctorId());
 		String generatedDoctorId = "";
 		if(doctor!=null){
-			generatedDoctorId += doctorData.getDoctorName().substring(0,3).concat(doctorData.getDoctorPhone().substring(1,3));
+			generatedDoctorId += doctorDTO.getDoctorName().substring(0,3).concat(doctorDTO.getDoctorPhone().substring(1,3));
 		}else{
-			generatedDoctorId += doctorData.getDoctorName().substring(0,3).concat(doctorData.getDoctorPhone().substring(0,3));
+			generatedDoctorId += doctorDTO.getDoctorName().substring(0,3).concat(doctorDTO.getDoctorPhone().substring(0,3));
 		}
-		try {
-			doctorData.setDoctorId(generatedDoctorId);
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-		return this.doctorRepo.save(doctorData);
+		doctorDTO.setDoctorId(generatedDoctorId);
+		doctor = this.doctorConverter.convertDtoToEntity(doctorDTO);
+		this.doctorRepo.save(doctor);
+		return doctorDTO;
 	}
 
 	@Override
@@ -39,16 +44,16 @@ public class DoctorServiceImpl implements DoctorService{
 	}
 
 	@Override
-	public Doctor updateDoctor(Doctor doctorData) {
-		Doctor doctor = this.doctorRepo.findByDoctorId(doctorData.getDoctorId());
-		doctor.setDoctorEmail(doctorData.getDoctorEmail());
-		doctor.setDoctorName(doctorData.getDoctorName());
-		doctor.setDoctorPassword(doctorData.getDoctorPassword());
-		doctor.setDoctorPhone(doctorData.getDoctorPhone());
-		doctor.setSpecialization(doctorData.getSpecialization());
-		doctor.setDoctorImageUrl(doctorData.getDoctorImageUrl());
+	public DoctorDTO updateDoctor(DoctorDTO doctorDTO) {
+		Doctor doctor = this.doctorRepo.findByDoctorId(doctorDTO.getDoctorId());
+		doctor.setDoctorEmail(doctorDTO.getDoctorEmail());
+		doctor.setDoctorName(doctorDTO.getDoctorName());
+		doctor.setDoctorPassword(doctorDTO.getDoctorPassword());
+		doctor.setDoctorPhone(doctorDTO.getDoctorPhone());
+		doctor.setSpecialization(doctorDTO.getSpecialization());
+		doctor.setDoctorImageUrl(doctorDTO.getDoctorImageUrl());
 		this.doctorRepo.save(doctor);
-		return doctor;
+		return this.doctorConverter.convertEntityToDto(doctor);
 	}
 
 	@Override

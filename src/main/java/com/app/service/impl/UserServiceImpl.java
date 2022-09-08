@@ -3,6 +3,8 @@ package com.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.converter.UserConverter;
+import com.app.dto.UserDTO;
 import com.app.entity.User;
 import com.app.repo.UserRepo;
 import com.app.service.UserService;
@@ -16,16 +18,20 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepo userRepo;
 
+
+    @Autowired
+    private UserConverter userConverter;
+
     @Override
-    public User createUser(User userData) {
-        return this.userRepo.save(userData);
+    public UserDTO createUser(UserDTO userDTO) {
+        return this.userConverter.convertEntityToDto(this.userRepo.save(this.userConverter.convertDtoToEntity(userDTO)));
     }
 
     @Override
-    public User loginUser(User userData) {
-       User user = this.userRepo.findByUserEmailId(userData.getUserEmailId());
-       if(user.getPassword().equals(userData.getPassword())){
-        return user;
+    public UserDTO loginUser(UserDTO userDTO) {
+       User user = this.userRepo.findByUserEmailId(userDTO.getUserEmailId());
+       if(user.getPassword().equals(userDTO.getPassword())){
+        return this.userConverter.convertEntityToDto(user);
        }else{
            return null;
        }
@@ -34,7 +40,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserByEmailId(String userEmailId){
         User user =  this.userRepo.findByUserEmailId(userEmailId);
-        System.out.println(user);
         log.error(user);
         return user;
     }

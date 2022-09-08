@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.SlotDTO;
 import com.app.entity.Doctor;
 import com.app.entity.Slot;
 import com.app.entity.User;
@@ -41,8 +42,8 @@ public class SlotController {
 
 	
 	@PostMapping("/create-slot")
-	public Slot createSlot(@RequestBody Slot slot) {
-		return this.slotService.createSlot(slot);
+	public SlotDTO createSlot(@RequestBody SlotDTO slotDTO) {
+		return this.slotService.createSlot(slotDTO);
 	}
 	
 	

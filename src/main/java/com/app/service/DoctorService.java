@@ -2,15 +2,17 @@ package com.app.service;
 
 import java.util.List;
 
+import com.app.dto.DoctorDTO;
 import com.app.entity.Doctor;
+import com.app.exception.DoctorNotFoundException;
 
 public interface DoctorService {
 
-	public Doctor createDoctor(Doctor doctorData) throws Exception;
+	public DoctorDTO createDoctor(DoctorDTO doctorDTO) throws DoctorNotFoundException;
 
 	public Doctor findByDoctorId(String doctorIdData);
 	
-	public Doctor updateDoctor(Doctor doctorData);
+	public DoctorDTO updateDoctor(DoctorDTO doctorDTO);
 	
 	public List<Doctor> getDoctorList();
 	

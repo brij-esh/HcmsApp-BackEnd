@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.converter.SlotConverter;
+import com.app.dto.SlotDTO;
 import com.app.entity.Slot;
 import com.app.repo.SlotRepo;
 import com.app.service.SlotService;
@@ -19,27 +21,24 @@ public class SlotServiceImpl implements SlotService{
 	
 	@Autowired
 	private SlotRepo slotRepo;
+
+	@Autowired
+	private SlotConverter slotConverter;
 	
 	@Override
-	public Slot createSlot(Slot slotData) {
-		Slot slot = new Slot();
-		if(getSlotCount(slotData.getDoctorId(), slotData.getSlotDate()) < 5) {
-			slotData.setSlotId(generateSlotId(slotData.getPatientName(),slotData.getSlotDate(),slotData.getDoctorId()));
+	public SlotDTO createSlot(SlotDTO slotDTO) {
+		Slot slot;
+		if(getSlotCount(slotDTO.getDoctorId(), slotDTO.getSlotDate()) < 5) {
+			slotDTO.setSlotId(generateSlotId(slotDTO.getPatientName(),slotDTO.getSlotDate(),slotDTO.getDoctorId()));
 			log.error("slot available");
-			log.error(slotData.getSlotDate());
-			log.error(slotData);
-			try {
-				log.error(slot.getSlotId());
-				slot = this.slotRepo.save(slotData);
-				
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			}
-			log.error(getSlotCount(slotData.getDoctorId(), slotData.getSlotDate()) + "slots, create getSlot method called");
-			return slot;
+			log.error(slotDTO.getSlotDate());
+			log.error(slotDTO);
+			slot =this.slotRepo.save(this.slotConverter.convertDtoToEntity(slotDTO));
+			log.error(getSlotCount(slotDTO.getDoctorId(), slotDTO.getSlotDate()) + "slots, create getSlot method called");
+			return this.slotConverter.convertEntityToDto(slot);
 		}
 		log.error("slots not available");
-		return slot;
+		return null;
 	}
 
 	public String generateSlotId(String patientName, LocalDate date,String doctorId){

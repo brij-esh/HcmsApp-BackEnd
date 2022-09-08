@@ -3,11 +3,12 @@ package com.app.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.app.dto.SlotDTO;
 import com.app.entity.Slot;
 
 public interface SlotService {
 	
-	public Slot createSlot(Slot slot);
+	public SlotDTO createSlot(SlotDTO slotDTO);
 	
 	public Slot getSlotById(String slotId);
 	

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.UserDTO;
 import com.app.entity.User;
 import com.app.service.UserService;
 
@@ -26,15 +27,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> userSignup(@RequestBody User userData){
-        User user = this.userService.createUser(userData);
+    public ResponseEntity<UserDTO> userSignup(@RequestBody UserDTO userDTO){
+        UserDTO user = this.userService.createUser(userDTO);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> userLogin(@RequestBody User userData){
-        log.error(userData);
-        User user = this.userService.loginUser(userData);
+    public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO userDTO){
+        log.error(userDTO);
+        UserDTO user = this.userService.loginUser(userDTO);
         return ResponseEntity.ok(user);
     }
 

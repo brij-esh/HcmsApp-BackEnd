@@ -1,8 +1,8 @@
 package com.app.service;
 
-import com.app.entity.Admin;
+import com.app.dto.AdminDTO;
 
 public interface AdminService {
 
-	public Admin findByAdminId(String adminIdData);
+	public AdminDTO findByAdminId(AdminDTO adminDTO);
 }

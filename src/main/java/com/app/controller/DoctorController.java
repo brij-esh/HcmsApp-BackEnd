@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.converter.DoctorConverter;
+import com.app.dto.DoctorDTO;
 import com.app.entity.Doctor;
+import com.app.exception.DoctorNotFoundException;
 import com.app.service.DoctorService;
 
 import lombok.extern.log4j.Log4j2;
@@ -30,20 +34,25 @@ public class DoctorController {
 	
 	@Autowired
 	private DoctorService doctorService;
+
+	@Autowired
+	private DoctorConverter doctorConverter;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Doctor> loginDoctor(@RequestBody Doctor doctorData){
-		Doctor doctor = this.doctorService.findByDoctorId(doctorData.getDoctorId());
-		if(doctor.getDoctorPassword().equals(doctorData.getDoctorPassword())) {
-			return ResponseEntity.ok(doctor);
+	public ResponseEntity<DoctorDTO> loginDoctor(@RequestBody DoctorDTO doctorDTO){
+		Doctor doctor = this.doctorService.findByDoctorId(this.doctorConverter.convertDtoToEntity(doctorDTO).getDoctorId());
+		if(doctor.getDoctorPassword().equals(doctorDTO.getDoctorPassword())) {
+			DoctorDTO doctorDTO2 = this.doctorConverter.convertEntityToDto(doctor);
+			return new ResponseEntity<>(doctorDTO2,HttpStatus.OK);
 		}
-		return (ResponseEntity<Doctor>) ResponseEntity.internalServerError();
+		DoctorDTO doctorDTO2 = this.doctorConverter.convertEntityToDto(doctor);
+		return new ResponseEntity<>(doctorDTO2, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
 	
 	@PostMapping("/")
-	public Doctor createDoctor(@RequestBody Doctor doctorData) throws Exception {
-		return this.doctorService.createDoctor(doctorData);
+	public DoctorDTO createDoctor(@RequestBody DoctorDTO doctorDTO) throws DoctorNotFoundException {
+		return this.doctorService.createDoctor(doctorDTO);
 	}
 	
 	@GetMapping("/get-doctor/{doctorIdData}")
@@ -57,19 +66,19 @@ public class DoctorController {
 	}
 	
 	@PutMapping("/update-doctor")
-	public Doctor updateDoctor(@RequestBody Doctor doctorData) {
-		Doctor doctor = this.doctorService.findByDoctorId(doctorData.getDoctorId());
-		log.error(doctor);
-		if(doctor!=null) {
-			this.doctorService.updateDoctor(doctorData);
+	public DoctorDTO updateDoctor(@RequestBody DoctorDTO doctorDTO) throws DoctorNotFoundException {
+		Doctor doctor = this.doctorService.findByDoctorId(doctorDTO.getDoctorId());
+		log.info(doctor);
+		if(doctor==null) {
+			throw new DoctorNotFoundException();
 		}
-		return doctor;
+		return this.doctorService.updateDoctor(doctorDTO);
 	}
 	
 	@DeleteMapping("/delete-doctor/{doctorIdData}")
 	@Transactional
 	public String deleteDoctor(@PathVariable  String doctorIdData) {
-		log.error("Doctor delete method "+doctorIdData);
+		log.info("Doctor delete method "+doctorIdData);
 		return this.doctorService.deleteDoctor(doctorIdData);
 	}
 }

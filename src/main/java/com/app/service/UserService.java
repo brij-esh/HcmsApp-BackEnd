@@ -1,12 +1,13 @@
 package com.app.service;
 
+import com.app.dto.UserDTO;
 import com.app.entity.User;
 
 public interface UserService {
 
-    public User createUser(User userData);
+    public UserDTO createUser(UserDTO userDTO);
     
-    public User loginUser(User userData);
+    public UserDTO loginUser(UserDTO userDTO);
 
     public User getUserByEmailId(String userEmailId);
 

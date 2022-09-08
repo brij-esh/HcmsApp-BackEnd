@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.converter.PharmacyConverter;
+import com.app.dto.PharmacyDTO;
 import com.app.entity.Pharmacy;
+import com.app.exception.PharmacyNotFoundException;
 import com.app.repo.PharmacyRepo;
 import com.app.service.PharmacyService;
 
@@ -15,21 +18,24 @@ public class PharmacyServiceImpl implements PharmacyService{
 	@Autowired
 	private PharmacyRepo pharmacyRepo;
 
+	@Autowired
+	private PharmacyConverter pharmacyConverter;
+
+
 	@Override
-	public Pharmacy createPharmacy(Pharmacy pharmacyData) throws Exception {
-		Pharmacy pharmacy = this.pharmacyRepo.findByPharmacyId(pharmacyData.getPharmacyId());
+	public PharmacyDTO createPharmacy(PharmacyDTO pharmacyDTO) throws PharmacyNotFoundException {
+
+		Pharmacy pharmacy = this.pharmacyRepo.findByPharmacyId(this.pharmacyConverter.convertDtoToEntity(pharmacyDTO).getPharmacyId());
 		String generatedPharmacyId = "";
 		if(pharmacy!=null){
-			generatedPharmacyId += pharmacyData.getPharmacyName().substring(0,3).concat(pharmacyData.getPharmacyPhone().substring(1,3));
+			generatedPharmacyId += pharmacyDTO.getPharmacyName().substring(0,3).concat(pharmacyDTO.getPharmacyPhone().substring(1,3));
 		}else{
-			generatedPharmacyId += pharmacyData.getPharmacyName().substring(0,3).concat(pharmacyData.getPharmacyPhone().substring(0,3));
+			generatedPharmacyId += pharmacyDTO.getPharmacyName().substring(0,3).concat(pharmacyDTO.getPharmacyPhone().substring(0,3));
 		}
-		try {
-			pharmacyData.setPharmacyId(generatedPharmacyId);
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-		return this.pharmacyRepo.save(pharmacyData);
+		pharmacyDTO.setPharmacyId(generatedPharmacyId);
+		pharmacy = this.pharmacyConverter.convertDtoToEntity(pharmacyDTO);
+		this.pharmacyRepo.save(pharmacy);
+		return pharmacyDTO;
 	}
 
 
@@ -39,16 +45,16 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 	
 	@Override
-	public Pharmacy updatePharmacy(Pharmacy pharmacyData) {
-		Pharmacy pharmacy = this.pharmacyRepo.findByPharmacyId(pharmacyData.getPharmacyId());
-		pharmacy.setPharmacyEmail(pharmacyData.getPharmacyEmail());
-		pharmacy.setPharmacyId(pharmacyData.getPharmacyId());
-		pharmacy.setPharmacyName(pharmacyData.getPharmacyName());
-		pharmacy.setPharmacyOwner(pharmacyData.getPharmacyOwner());
-		pharmacy.setPharmacyPassword(pharmacyData.getPharmacyPassword());
-		pharmacy.setPharmacyPhone(pharmacyData.getPharmacyPhone());
+	public PharmacyDTO updatePharmacy(PharmacyDTO pharmacyDTO) {
+		Pharmacy pharmacy = this.pharmacyRepo.findByPharmacyId(pharmacyDTO.getPharmacyId());
+		pharmacy.setPharmacyEmail(pharmacyDTO.getPharmacyEmail());
+		pharmacy.setPharmacyId(pharmacyDTO.getPharmacyId());
+		pharmacy.setPharmacyName(pharmacyDTO.getPharmacyName());
+		pharmacy.setPharmacyOwner(pharmacyDTO.getPharmacyOwner());
+		pharmacy.setPharmacyPassword(pharmacyDTO.getPharmacyPassword());
+		pharmacy.setPharmacyPhone(pharmacyDTO.getPharmacyPhone());
 		this.pharmacyRepo.save(pharmacy);
-		return pharmacy;
+		return this.pharmacyConverter.convertEntityToDto(pharmacy);
 	}
 
 
