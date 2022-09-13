@@ -1,14 +1,20 @@
 package com.app.service.impl;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.converter.SlotConverter;
 import com.app.dto.SlotDTO;
+import com.app.entity.Doctor;
 import com.app.entity.Slot;
+import com.app.entity.User;
+import com.app.repo.DoctorRepo;
 import com.app.repo.SlotRepo;
 import com.app.service.SlotService;
 
@@ -23,26 +29,32 @@ public class SlotServiceImpl implements SlotService{
 	private SlotRepo slotRepo;
 
 	@Autowired
+	private DoctorRepo doctorRepo;
+
+	@Autowired
 	private SlotConverter slotConverter;
+
 	
 	@Override
-	public SlotDTO createSlot(SlotDTO slotDTO) {
+	public SlotDTO createSlot(SlotDTO slotDTO) throws NoSuchAlgorithmException {
 		Slot slot;
-		if(getSlotCount(slotDTO.getDoctorId(), slotDTO.getSlotDate()) < 5) {
+		Integer slotSize = this.doctorRepo.findSlotSizeByDoctorId(slotDTO.getDoctorId());
+		if(getSlotCount(slotDTO.getDoctorId(), slotDTO.getSlotDate()) < slotSize) {
 			slotDTO.setSlotId(generateSlotId(slotDTO.getPatientName(),slotDTO.getSlotDate(),slotDTO.getDoctorId()));
 			log.error("slot available");
 			log.error(slotDTO.getSlotDate());
 			log.error(slotDTO);
 			slot =this.slotRepo.save(this.slotConverter.convertDtoToEntity(slotDTO));
-			log.error(getSlotCount(slotDTO.getDoctorId(), slotDTO.getSlotDate()) + "slots, create getSlot method called");
+			log.error(getSlotCount(slotDTO.getDoctorId(), slotDTO.getSlotDate()) + " slots, create getSlot method called");
 			return this.slotConverter.convertEntityToDto(slot);
 		}
 		log.error("slots not available");
 		return null;
 	}
 
-	public String generateSlotId(String patientName, LocalDate date,String doctorId){
-		return patientName.substring(0,4).concat(doctorId.substring(0,3)).concat(date.toString().substring(4,7));
+	public String generateSlotId(String patientName, LocalDate date,String doctorId) throws NoSuchAlgorithmException{
+		Random rand = SecureRandom.getInstanceStrong();
+		return patientName.substring(0,3).concat(doctorId.substring(0,3)).concat(date.toString().substring(5,7).concat(Integer.toString((rand.nextInt()*patientName.length())/100000)));
 	}
 	
 
@@ -84,18 +96,30 @@ public class SlotServiceImpl implements SlotService{
 	}
 
 	@Override
-	public Slot updateSlot(Slot slotData){
-		Slot slot = this.slotRepo.findBySlotId(slotData.getSlotId());
-		slot.setDoctor(slotData.getDoctor());
-		slot.setDoctorId(slotData.getDoctorId());
-		slot.setPatientAge(slotData.getPatientAge());
-		slot.setPatientName(slotData.getPatientName());
-		slot.setPatientPhone(slotData.getPatientPhone());
-		slot.setPrescription(slotData.getPrescription());
-		slot.setSlotDate(slotData.getSlotDate());
-		slot.setSymptoms(slotData.getSymptoms());
-		slot.setUser(slotData.getUser());
-		return this.slotRepo.save(slot);
+	public SlotDTO updateSlot(SlotDTO slotDTO){
+		Slot slot = this.slotRepo.findBySlotId(slotDTO.getSlotId());
+		Doctor doctor = slot.getDoctor();
+		User user = slot.getUser();
+		slot.setDoctor(slotDTO.getDoctor());
+		slot.setDoctorId(slotDTO.getDoctorId());
+		slot.setPatientAge(slotDTO.getPatientAge());
+		slot.setPatientName(slotDTO.getPatientName());
+		slot.setPatientPhone(slotDTO.getPatientPhone());
+		slot.setPrescription(slotDTO.getPrescription());
+		slot.setSlotDate(slotDTO.getSlotDate());
+		slot.setSymptoms(slotDTO.getSymptoms());
+		slot.setUser(slotDTO.getUser());
+		slot.setDoctor(doctor);
+		slot.setUser(user);
+		this.slotRepo.save(slot);
+		return this.slotConverter.convertEntityToDto(slot);
+	}
+
+	@Override
+	public String deleteSlot(String slotId) {
+		Slot slot = this.slotRepo.findBySlotId(slotId);
+		this.slotRepo.delete(slot);
+		return slotId + "deleted successfully";
 	}
 
 

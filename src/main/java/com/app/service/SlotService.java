@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import com.app.entity.Slot;
 
 public interface SlotService {
 	
-	public SlotDTO createSlot(SlotDTO slotDTO);
+	public SlotDTO createSlot(SlotDTO slotDTO) throws NoSuchAlgorithmException;
 	
 	public Slot getSlotById(String slotId);
 	
@@ -22,5 +23,7 @@ public interface SlotService {
 
 	public List<Slot> getSlotListByUserId(Long userId);
 
-	public Slot updateSlot(Slot slot);
+	public SlotDTO updateSlot(SlotDTO slotDTO);
+
+	public String deleteSlot(String slotId);
 }

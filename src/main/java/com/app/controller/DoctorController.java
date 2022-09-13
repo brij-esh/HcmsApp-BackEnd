@@ -81,4 +81,10 @@ public class DoctorController {
 		log.info("Doctor delete method "+doctorIdData);
 		return this.doctorService.deleteDoctor(doctorIdData);
 	}
+
+	@GetMapping("/get-slot-size/{doctorIdData}")
+	public Integer getSlotSize(@PathVariable String doctorIdData){
+		return this.doctorService.getSlotSize(doctorIdData);
+	}
+
 }

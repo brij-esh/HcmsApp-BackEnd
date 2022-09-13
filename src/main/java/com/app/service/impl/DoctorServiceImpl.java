@@ -52,6 +52,8 @@ public class DoctorServiceImpl implements DoctorService{
 		doctor.setDoctorPhone(doctorDTO.getDoctorPhone());
 		doctor.setSpecialization(doctorDTO.getSpecialization());
 		doctor.setDoctorImageUrl(doctorDTO.getDoctorImageUrl());
+		doctor.setDoctorAddress(doctorDTO.getDoctorAddress());
+		doctor.setSlotSize(doctorDTO.getSlotSize());
 		this.doctorRepo.save(doctor);
 		return this.doctorConverter.convertEntityToDto(doctor);
 	}
@@ -65,6 +67,11 @@ public class DoctorServiceImpl implements DoctorService{
 	public String deleteDoctor(String doctorIdData) {
 		this.doctorRepo.deleteByDoctorId(doctorIdData);
 		return doctorIdData+" doctor deleted";
+	}
+
+	@Override
+	public Integer getSlotSize(String doctorIdData){
+		return this.doctorRepo.findSlotSizeByDoctorId(doctorIdData);
 	}
 
 	

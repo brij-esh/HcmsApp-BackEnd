@@ -1,11 +1,15 @@
 package com.app.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.converter.SlotConverter;
 import com.app.dto.SlotDTO;
 import com.app.entity.Doctor;
 import com.app.entity.Slot;
@@ -40,9 +45,11 @@ public class SlotController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private SlotConverter slotConverter;
 	
 	@PostMapping("/create-slot")
-	public SlotDTO createSlot(@RequestBody SlotDTO slotDTO) {
+	public SlotDTO createSlot(@RequestBody SlotDTO slotDTO) throws NoSuchAlgorithmException {
 		return this.slotService.createSlot(slotDTO);
 	}
 	
@@ -84,25 +91,37 @@ public class SlotController {
 		return this.slotService.updateSlotPrescription(slotId, prescription);
 	}
 
+	@PutMapping("/update-slot-by-user")
+	public SlotDTO updateSlotSize(@RequestBody SlotDTO slotDTO){
+		return this.slotService.updateSlot(slotDTO);
+	}
+
 	@GetMapping("/get-slot-list-by-user-id/{userIdData}")
 	public List<Slot> getSlotListByUserId(@PathVariable Long userIdData){
 		return this.slotService.getSlotListByUserId(userIdData);
 	}
 
 	@PutMapping("/{slotId}/doctor/{doctorId}")
-	public Slot bookSlot(@PathVariable String slotId,@PathVariable String doctorId){
+	public SlotDTO bookSlot(@PathVariable String slotId,@PathVariable String doctorId){
 		Doctor doctor = this.doctorService.findByDoctorId(doctorId);
 		Slot slot = this.slotService.getSlotById(slotId);
 		slot.assignDoctor(doctor);
-		return this.slotService.updateSlot(slot);
+		return this.slotService.updateSlot(this.slotConverter.convertEntityToDto(slot));
 	}
 
 	@PutMapping("/{slotId}/user/{userId}")
-	public Slot bookUser(@PathVariable Long userId,@PathVariable String slotId){
+	public SlotDTO bookUser(@PathVariable Long userId,@PathVariable String slotId){
 		User user = this.userService.getUserById(userId);
 		Slot slot = this.slotService.getSlotById(slotId);
 		slot.assignUser(user);
-		return this.slotService.updateSlot(slot);
+		return this.slotService.updateSlot(this.slotConverter.convertEntityToDto(slot));
+	}
+
+	@DeleteMapping("/delete-by-slot-id/{slotId}")
+	@Transactional
+	public String deleteSlot(@PathVariable String slotId){
+		this.slotService.deleteSlot(slotId);
+		return slotId+" deleted successfully";
 	}
 
 }

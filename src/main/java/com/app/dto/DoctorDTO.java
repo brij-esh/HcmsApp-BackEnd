@@ -12,4 +12,5 @@ public class DoctorDTO {
 	private String doctorEmail;
 	private String doctorAddress;
 	private String doctorImageUrl;
+	private Integer slotSize;
 }

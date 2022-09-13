@@ -2,7 +2,6 @@ package com.app.entity;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -39,7 +38,7 @@ public class Slot {
 	private String symptoms;
 	private String prescription;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	@JsonBackReference(value = "user-ref")
 	private User user;
@@ -48,7 +47,7 @@ public class Slot {
 		this.user = user;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	@JsonBackReference(value = "doctor-ref")
 	private Doctor doctor;

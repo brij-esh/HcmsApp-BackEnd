@@ -3,6 +3,7 @@ package com.app.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -36,8 +37,9 @@ public class Doctor {
 	private String doctorEmail;
 	private String doctorAddress;
 	private String doctorImageUrl;
+	private Integer slotSize;
 	
-	@OneToMany(mappedBy = "doctor")
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@JsonManagedReference(value = "doctor-ref")
 	private Set<Slot> slots = new HashSet<>();

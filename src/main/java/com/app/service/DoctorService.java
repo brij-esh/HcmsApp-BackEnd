@@ -17,4 +17,6 @@ public interface DoctorService {
 	public List<Doctor> getDoctorList();
 	
 	public String deleteDoctor(String doctorIdData);
+
+	public Integer getSlotSize(String doctorIdData);
 }
