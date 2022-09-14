@@ -7,11 +7,11 @@
 		<version>2.7.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.pharmacy</groupId>
-	<artifactId>pharmacy</artifactId>
+	<groupId>com.app</groupId>
+	<artifactId>hcmsapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pharmacy</name>
-	<description>Demo project for Spring Boot</description>
+	<name>HcmsApp</name>
+	<description>HcmsApp using Spring boot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
