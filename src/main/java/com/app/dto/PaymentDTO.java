@@ -1,5 +1,7 @@
 package com.app.dto;
 
+import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
@@ -10,5 +12,7 @@ public class PaymentDTO {
 	private String cardHolderName;
 	private String expiry;
 	private String cvv;
-    private Double fees;
+    private Double amount;
+	private LocalDate paymentDate;
+	private Long userId;
 }

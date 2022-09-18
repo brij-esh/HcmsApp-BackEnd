@@ -1,5 +1,8 @@
 package com.app.service.impl;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +25,19 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentDTO createPayment(PaymentDTO paymentDTO) {
         Payment payment = this.paymentConverter.convertDtoToEntity(paymentDTO);
+        payment.setPaymentDate(LocalDate.now());
         this.paymentRepo.save(payment);
         return paymentDTO;
+    }
+
+    @Override
+    public List<Payment> getPaymentList() {
+        return this.paymentRepo.findAll();
+    }
+
+    @Override
+    public List<Payment> getPaymentListByDateRange(LocalDate startDate, LocalDate endDate) {
+        return this.paymentRepo.findByPaymentDateGreaterThanEqualAndPaymentDateLessThanEqual(startDate, endDate);
     }
     
 }
