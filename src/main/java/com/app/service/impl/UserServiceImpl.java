@@ -30,11 +30,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDTO loginUser(UserDTO userDTO) {
        User user = this.userRepo.findByUserEmailId(userDTO.getUserEmailId());
+       System.out.println(userDTO.getPassword());
        if(user.getPassword().equals(userDTO.getPassword())){
-        return this.userConverter.convertEntityToDto(user);
-       }else{
-           return null;
+        System.out.println(userDTO.getPassword());
+        userDTO =  this.userConverter.convertEntityToDto(user);
        }
+       return userDTO;
     }
 
     @Override

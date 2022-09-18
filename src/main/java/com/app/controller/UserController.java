@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.converter.UserConverter;
 import com.app.dto.UserDTO;
 import com.app.entity.User;
 import com.app.service.UserService;
@@ -26,18 +28,33 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserConverter userConverter;
+
     @PostMapping("/signup")
     public ResponseEntity<UserDTO> userSignup(@RequestBody UserDTO userDTO){
         UserDTO user = this.userService.createUser(userDTO);
         return ResponseEntity.ok(user);
     }
 
+    // @PostMapping("/login")
+    // public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO userDTO){
+    //     log.error(userDTO);
+    //     UserDTO user = this.userService.loginUser(userDTO);
+    //     return ResponseEntity.ok(user);
+    // }
+
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO userDTO){
-        log.error(userDTO);
-        UserDTO user = this.userService.loginUser(userDTO);
-        return ResponseEntity.ok(user);
-    }
+	public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO userDTO){
+		User user = this.userService.getUserByEmailId(userDTO.getUserEmailId());
+		if(user.getPassword().equals(userDTO.getPassword())) {
+			UserDTO userDTO2 = this.userConverter.convertEntityToDto(user);
+			return new ResponseEntity<>(userDTO2,HttpStatus.OK);
+		}
+		UserDTO userDTO2 = this.userConverter.convertEntityToDto(user);
+		return new ResponseEntity<>(userDTO2, HttpStatus.INTERNAL_SERVER_ERROR);
+		
+	}
 
     @GetMapping("/get-user/{userEmailIdData}")
     public ResponseEntity<User> getUserByEmailId(@PathVariable String userEmailIdData){
