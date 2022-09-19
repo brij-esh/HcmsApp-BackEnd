@@ -15,4 +15,5 @@ public class PaymentDTO {
     private Double amount;
 	private LocalDate paymentDate;
 	private Long userId;
+	private String doctorId;
 }

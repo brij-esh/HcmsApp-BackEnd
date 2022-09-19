@@ -27,16 +27,6 @@ public class UserServiceImpl implements UserService{
         return this.userConverter.convertEntityToDto(this.userRepo.save(this.userConverter.convertDtoToEntity(userDTO)));
     }
 
-    @Override
-    public UserDTO loginUser(UserDTO userDTO) {
-       User user = this.userRepo.findByUserEmailId(userDTO.getUserEmailId());
-       System.out.println(userDTO.getPassword());
-       if(user.getPassword().equals(userDTO.getPassword())){
-        System.out.println(userDTO.getPassword());
-        userDTO =  this.userConverter.convertEntityToDto(user);
-       }
-       return userDTO;
-    }
 
     @Override
     public User getUserByEmailId(String userEmailId){

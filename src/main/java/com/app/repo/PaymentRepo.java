@@ -13,4 +13,5 @@ import com.app.entity.Payment;
 public interface PaymentRepo extends JpaRepository<Payment,Long> {
     List<Payment> findByPaymentDate(LocalDate paymentDate);
     List<Payment> findByPaymentDateGreaterThanEqualAndPaymentDateLessThanEqual(LocalDate startDate, LocalDate endDate);
+    List<Payment> findByDoctorIdAndPaymentDateGreaterThanEqualAndPaymentDateLessThanEqual(String doctorId, LocalDate startDate, LocalDate endDate);
 }

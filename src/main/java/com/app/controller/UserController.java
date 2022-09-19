@@ -37,13 +37,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // @PostMapping("/login")
-    // public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO userDTO){
-    //     log.error(userDTO);
-    //     UserDTO user = this.userService.loginUser(userDTO);
-    //     return ResponseEntity.ok(user);
-    // }
-
     @PostMapping("/login")
 	public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO userDTO){
 		User user = this.userService.getUserByEmailId(userDTO.getUserEmailId());

@@ -35,4 +35,5 @@ public class Payment {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
 	private LocalDate paymentDate;
 	private Long userId;
+	private String doctorId;
 }

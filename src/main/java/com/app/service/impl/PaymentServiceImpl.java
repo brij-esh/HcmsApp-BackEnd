@@ -39,5 +39,10 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Payment> getPaymentListByDateRange(LocalDate startDate, LocalDate endDate) {
         return this.paymentRepo.findByPaymentDateGreaterThanEqualAndPaymentDateLessThanEqual(startDate, endDate);
     }
+
+    @Override
+    public List<Payment> getPaymentListByDoctorIdAndDateRange(String doctorId, LocalDate startDate, LocalDate endDate) {
+       return this.paymentRepo.findByDoctorIdAndPaymentDateGreaterThanEqualAndPaymentDateLessThanEqual(doctorId, startDate, endDate);
+    }
     
 }

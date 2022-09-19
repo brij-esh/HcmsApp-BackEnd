@@ -12,4 +12,6 @@ public interface PaymentService {
     public List<Payment> getPaymentList();
 
     public List<Payment> getPaymentListByDateRange(LocalDate startDate, LocalDate endDate);
+
+    public List<Payment> getPaymentListByDoctorIdAndDateRange(String doctorId,LocalDate startDate, LocalDate endDate);
 }

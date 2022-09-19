@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,11 @@ public class PaymentController {
     @GetMapping("/getPaymentListByDateRange")
     public ResponseEntity<List<Payment>> getPaymentListByDateRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
         List<Payment> payments = this.paymentService.getPaymentListByDateRange(startDate, endDate);
+        return new ResponseEntity<>(payments,HttpStatus.OK);
+    }
+    @GetMapping("/getPaymentListByDoctorIdAndDateRange/{doctorId}")
+    public ResponseEntity<List<Payment>> getPaymentListByDoctorIdAndDateRange(@PathVariable String doctorId, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
+        List<Payment> payments = this.paymentService.getPaymentListByDoctorIdAndDateRange(doctorId, startDate, endDate);
         return new ResponseEntity<>(payments,HttpStatus.OK);
     }
 }
