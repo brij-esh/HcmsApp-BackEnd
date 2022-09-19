@@ -19,4 +19,5 @@ public class SlotDTO {
 	private String prescription;
     private Doctor doctor;
     private User user;
+	private boolean status;
 }

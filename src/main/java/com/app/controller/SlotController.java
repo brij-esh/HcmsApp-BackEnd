@@ -117,6 +117,11 @@ public class SlotController {
 		return this.slotService.updateSlot(this.slotConverter.convertEntityToDto(slot));
 	}
 
+	@PutMapping("/updateSlotStatus/{slotId}")
+	public Slot updateSlotStatus(@PathVariable String slotId, @RequestBody boolean status){
+		return this.slotService.updateSlotStatus(slotId, status);
+	}
+
 	@DeleteMapping("/delete-by-slot-id/{slotId}")
 	@Transactional
 	public String deleteSlot(@PathVariable String slotId){

@@ -26,4 +26,6 @@ public interface SlotService {
 	public SlotDTO updateSlot(SlotDTO slotDTO);
 
 	public String deleteSlot(String slotId);
+
+	public Slot updateSlotStatus(String slotId, boolean status);
 }

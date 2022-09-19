@@ -9,7 +9,6 @@ import com.app.entity.Pharmacy;
 @Repository
 public interface PharmacyRepo extends JpaRepository<Pharmacy, String>{
 	public Pharmacy findByPharmacyId(String pharmacyId);
-
 	public void deleteByPharmacyId(String pharmacyIdData);
 	
 

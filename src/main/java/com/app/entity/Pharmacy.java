@@ -26,5 +26,4 @@ public class Pharmacy {
 	private String pharmacyPassword;
 	private String pharmacyPhone;
 	private String pharmacyEmail;
-	
 }

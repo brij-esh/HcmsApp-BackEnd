@@ -37,7 +37,7 @@ public class Slot {
 	private String patientPhone;
 	private String symptoms;
 	private String prescription;
-
+	private boolean status;	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	@JsonBackReference(value = "user-ref")
