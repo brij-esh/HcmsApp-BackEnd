@@ -126,7 +126,6 @@ public class SlotServiceImpl implements SlotService{
 	public Slot updateSlotStatus(String slotId, boolean status) {
 		Slot slot = this.slotRepo.findBySlotId(slotId);
 		slot.setStatus(status);
-		System.out.println(slotId+ " "+ status);
 		return this.slotRepo.save(slot);
 	}
 
